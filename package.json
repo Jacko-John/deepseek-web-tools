@@ -1,0 +1,65 @@
+{
+  "name": "deepseek-web-tools",
+  "version": "0.1.0",
+  "description": "A small, read-only MCP server for DeepSeek's Search and Fetch APIs.",
+  "type": "module",
+  "license": "MIT",
+  "author": "deepseek-web-tools contributors",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jacko-John/deepseek-web-tools.git"
+  },
+  "homepage": "https://github.com/Jacko-John/deepseek-web-tools#readme",
+  "bugs": {
+    "url": "https://github.com/Jacko-John/deepseek-web-tools/issues"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "deepseek",
+    "web-search",
+    "web-fetch",
+    "kimi-code",
+    "claude-code",
+    "codex"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "bin": {
+    "deepseek-web-tools": "dist/index.js"
+  },
+  "main": "dist/lib.js",
+  "types": "dist/lib.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/lib.d.ts",
+      "default": "./dist/lib.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "bun src/index.ts",
+    "test": "bun test",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepare": "node ./node_modules/typescript/lib/tsc.js -p tsconfig.json",
+    "prepublishOnly": "node ./node_modules/typescript/lib/tsc.js -p tsconfig.json"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.9.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "packageManager": "bun@1.4.2"
+}
