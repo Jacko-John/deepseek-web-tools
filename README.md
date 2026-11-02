@@ -56,10 +56,16 @@ client.
 
 ## Install
 
-Once published:
+Run directly with npm:
 
 ```bash
 npx -y deepseek-web-tools
+```
+
+Or with Bun:
+
+```bash
+bunx deepseek-web-tools
 ```
 
 From a checkout:
