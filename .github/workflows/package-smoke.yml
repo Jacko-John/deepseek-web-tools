@@ -1,0 +1,44 @@
+name: Package smoke test
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  package-smoke:
+    name: Package smoke test (${{ matrix.runtime }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        runtime: [node, bun]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: package.json
+      - run: bun install --frozen-lockfile
+      - name: Pack, install, and list MCP tools
+        env:
+          RUNTIME: ${{ matrix.runtime }}
+        run: |
+          package_file="$(npm pack --pack-destination "$RUNNER_TEMP" --silent)"
+          install_dir="$(mktemp -d "$RUNNER_TEMP/deepseek-mcp.XXXXXX")"
+          cd "$install_dir"
+          printf '{"name":"deepseek-package-smoke","private":true}\n' > package.json
+          if [ "$RUNTIME" = bun ]; then
+            bun add --ignore-scripts "$RUNNER_TEMP/$package_file"
+          else
+            npm install --ignore-scripts --no-audit --no-fund "$RUNNER_TEMP/$package_file"
+          fi
+          node "$GITHUB_WORKSPACE/scripts/package-smoke.mjs" "$RUNTIME" "$install_dir"
